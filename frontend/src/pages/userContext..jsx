@@ -2,7 +2,7 @@ import { createContext } from "react";
 export const dataContext = createContext()
 function UserContext({children}){
 
-    const serverURL = "http://192.168.43.163:8000"
+    const serverURL = "https://spimrify-backend.onrender.com"
 
     const value={
         serverURL
