@@ -22,7 +22,6 @@ function Login(){
                 password
             },{withCredentials:true})
             localStorage.setItem("userEmail", email)
-            console.log(data)
             dispatch(setUserData(data.data))
             
             setLoad(false)

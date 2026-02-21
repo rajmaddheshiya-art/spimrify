@@ -29,7 +29,6 @@ function Signup(){
 
                 dispatch(setUserData(data.data))
                 setLoading(false)
-                console.log("Navigating with email:", email)
                 nav("/otp",{state:{email:email}})
         } catch (error) {
             console.log(error)

@@ -29,7 +29,6 @@ let nav = useNavigate()
                     email: checkEmail,
                     otp: mes
                 },{withCredentials:true})
-                console.log(data) 
                 dispatch(setUserData(data.data))
                 alert("Account Verified!");
 

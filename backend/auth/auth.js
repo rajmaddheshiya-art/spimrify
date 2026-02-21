@@ -42,7 +42,7 @@ export const signup = async (req, res) => {
             message: "Signup Successfully",
             userName: createUser.userName,
             email: createUser.email,
-            otp: createUser.otp,
+            // otp: createUser.otp,
             role: createUser.role
         })
 
@@ -86,7 +86,7 @@ export const login = async (req, res) => {
             message: "Login Successfully",
             userName: existEmail.userName,
             email: existEmail.email,
-            otp,
+            // otp,
             isVerified: false,
             role: existEmail.role
         })
