@@ -34,7 +34,7 @@ function App() {
             <div style={{ height: "100vh", display: "flex", justifyContent: "center", alignItems: "center", background: "#000", color: "#fff" }}>
                 <div style={{ textAlign: 'center' }}>
                     <h2>Authenticating...</h2>
-                    <p style={{ fontSize: '12px', color: '#555' }}>Waking up server (Render Free Tier)</p>
+                    <p style={{ fontSize: '12px', color: '#555' }}>Spimrify</p>
                 </div>
             </div>
         );
