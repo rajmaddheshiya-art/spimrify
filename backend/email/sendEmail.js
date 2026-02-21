@@ -1,33 +1,37 @@
 import nodemailer from "nodemailer";
+
 export const sendOTPByEmail = async (email, otp) => {
     try {
         const transporter = nodemailer.createTransport({
-            // Is host ko try karo, ye Google ka alternate server hai
-            host: "smtp-relay.gmail.com",
-            port: 587,
-            secure: false,
+            // Gmail ka primary SMTP server
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true, // Port 465 ke liye true
             auth: {
                 user: process.env.EMAIL_AUTH,
-                pass: process.env.EMAIL_PASS,
+                pass: process.env.EMAIL_PASS, // Jo aaj banaya wo App Password
             },
-            // Force IPv4 isse connection timeout nahi hoga
-            family: 4,
-            tls: {
-                rejectUnauthorized: false
-            }
+            // Force IPv4 - Ye Render ke 'ENETUNREACH' error ko khatam karega
+            family: 4 
         });
 
         const mailOptions = {
-            from: process.env.EMAIL_AUTH,
+            from: `"Spimrify" <${process.env.EMAIL_AUTH}>`,
             to: email,
             subject: "Account Verification OTP",
-            text: `Aapka OTP hai: ${otp}`,
-            html: `<h1 style="color:white;text-align:center;background-color:green;">OTP: ${otp}</h1>`,
+            html: `
+                <div style="font-family: Arial, sans-serif; text-align: center;">
+                    <h2>Aapka OTP Code</h2>
+                    <h1 style="color: #2ecc71;">${otp}</h1>
+                    <p>Ye code sirf 10 minutes ke liye valid hai.</p>
+                </div>
+            `,
         };
 
         await transporter.sendMail(mailOptions);
-        console.log("Email sent successfully!");
+        console.log("Mubarak ho! Email sent successfully!");
     } catch (error) {
-        console.log("Direct IP Email error:", error.message);
+        // Agar abhi bhi error aaye, toh logs mein ye detail dikhayega
+        console.log("Nodemailer Debug Error:", error.message);
     }
 };
