@@ -10,9 +10,10 @@ dotenv.config()
 const port = process.env.PORT || 5000;
 const app = express()
 app.use(cors({
-    origin:["http://localhost:5173",  "http://192.168.43.163:5173",process.env.FRONTEND_URL],
-    credentials:true
-}))
+    origin: "https://spimrify-frontend.onrender.com", // Aapka Render wala URL
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"]
+}));
 app.use(express.json())
 app.use(cookieParser())
 app.use(authRouter)
