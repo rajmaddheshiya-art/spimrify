@@ -1,37 +1,28 @@
-import nodemailer from "nodemailer";
+import { Resend } from 'resend';
+
+// Ye variable Render se key uthayega
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const sendOTPByEmail = async (email, otp) => {
     try {
-        const transporter = nodemailer.createTransport({
-            // Gmail ka primary SMTP server
-            host: "smtp.gmail.com",
-            port: 465,
-            secure: true, // Port 465 ke liye true
-            auth: {
-                user: process.env.EMAIL_AUTH,
-                pass: process.env.EMAIL_PASS, // Jo aaj banaya wo App Password
-            },
-            // Force IPv4 - Ye Render ke 'ENETUNREACH' error ko khatam karega
-            family: 4 
+        console.log("Resend API se OTP bhej raha hoon...");
+        
+        const { data, error } = await resend.emails.send({
+            from: 'Spimrify <onboarding@resend.dev>', // Free tier mein yahi rahega
+            to: email, 
+            subject: 'Spimrify - Your OTP Code',
+            html: `<strong>Your OTP is: ${otp}</strong>. It will expire in 10 minutes.`,
         });
 
-        const mailOptions = {
-            from: `"Spimrify" <${process.env.EMAIL_AUTH}>`,
-            to: email,
-            subject: "Account Verification OTP",
-            html: `
-                <div style="font-family: Arial, sans-serif; text-align: center;">
-                    <h2>Aapka OTP Code</h2>
-                    <h1 style="color: #2ecc71;">${otp}</h1>
-                    <p>Ye code sirf 10 minutes ke liye valid hai.</p>
-                </div>
-            `,
-        };
+        if (error) {
+            console.error("Resend Error:", error);
+            return false;
+        }
 
-        await transporter.sendMail(mailOptions);
-        console.log("Mubarak ho! Email sent successfully!");
-    } catch (error) {
-        // Agar abhi bhi error aaye, toh logs mein ye detail dikhayega
-        console.log("Nodemailer Debug Error:", error.message);
+        console.log("Success! Email sent:", data.id);
+        return true;
+    } catch (err) {
+        console.error("Critical Resend Error:", err.message);
+        return false;
     }
 };
