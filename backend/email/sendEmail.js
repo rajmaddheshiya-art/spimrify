@@ -2,19 +2,17 @@ import nodemailer from "nodemailer";
 export const sendOTPByEmail = async (email, otp) => {
     try {
         const transporter = nodemailer.createTransport({
-            // 'smtp.gmail.com' ki jagah direct IPv4 address
-            host: "74.125.200.108", 
+            // Is host ko try karo, ye Google ka alternate server hai
+            host: "smtp-relay.gmail.com",
             port: 587,
-            secure: false, 
+            secure: false,
             auth: {
                 user: process.env.EMAIL_AUTH,
                 pass: process.env.EMAIL_PASS,
             },
-            // Force IPv4
+            // Force IPv4 isse connection timeout nahi hoga
             family: 4,
-            connectionTimeout: 20000, // Thoda extra time
             tls: {
-                servername: "smtp.gmail.com", // Ye zaroori hai certificate verify karne ke liye
                 rejectUnauthorized: false
             }
         });
