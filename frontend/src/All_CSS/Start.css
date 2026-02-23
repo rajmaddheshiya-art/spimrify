@@ -849,6 +849,10 @@
         color: white;
     }
 
+    #holi{
+        display: none;
+    }
+
 }
 
 /* ----------------------------------RESPONSEVIE--------------------------------------------------------- */
@@ -859,6 +863,20 @@
     * {
         margin: 0%;
         padding: 0%;
+    }
+
+    .holiDiv{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        #holi{
+        display: block;
+        height: 60px;
+        width: 96%;
+        margin-top: 2%;
+        border-radius: 5px;
     }
 
     .withPay{

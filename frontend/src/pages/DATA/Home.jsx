@@ -17,15 +17,15 @@ import a5 from "../../assets/a5.png"
 import a6 from "../../assets/a6.png"
 import a7 from "../../assets/a7.png"
 import a8 from "../../assets/a8.png"
+import holi from "../../assets/holi.png"
 
 
-
-function Home(){
-  useGetCurrentUserData()
-    let {userData} = useSelector(state=>state.user)
+function Home() {
+    useGetCurrentUserData()
+    let { userData } = useSelector(state => state.user)
     let [side, setSide] = useState(false)
     let nav = useNavigate()
-    
+
 
 
     const comingSoon = () => {
@@ -47,58 +47,61 @@ function Home(){
 
 
 
-    return(
+    return (
         <div className="main_div">
             <div className="home_header_div">
-                <div className="fix_header">  
+                <div className="fix_header">
                     <div id="home_play">
-                       <h1 id="text_play">Spim<span id="case">rify</span></h1> 
+                        <h1 id="text_play">Spim<span id="case">rify</span></h1>
                     </div>
 
-                     <div id="money">
-                      <div className="mainMoney">
-                        <h1 id="caseAdd" onClick={()=>{nav('/wallet')}}>₹ {userData?.walletBalance || 0}</h1>
-                      </div>
-                     </div>
-                    <img src={userData?.profileImage || sf} id="home_logo" onClick={() => setSide(!side)}/> 
+                    <div id="money">
+                        <div className="mainMoney">
+                            <h1 id="caseAdd" onClick={() => { nav('/wallet') }}>₹ {userData?.walletBalance || 0}</h1>
+                        </div>
+                    </div>
+                    <img src={userData?.profileImage || sf} id="home_logo" onClick={() => setSide(!side)} />
                 </div>
                 {side && <Sidebar setSide={setSide} />}
 
             </div>
+            <div className="holiDiv">
+                <img src={holi} id="holi" />
 
-              <h1 id="games">Top Trending Games</h1>
+            </div>
+            <h1 id="games">Top Trending Games</h1>
 
-              <div className="allGames">
+            <div className="allGames">
 
-                <img id="second_game" src={game} onClick={()=>{nav('/Bet')}}/>
-                <img id="second_game" src={a4} onClick={comingSoon}/>
-                <img id="first_game" src={a7} onClick={comingSoon}/>
-                <img id="second_game" src={a1} onClick={comingSoon}/>
-                <img id="first_game" src={a2} onClick={comingSoon}/>
-                <img id="second_game" src={a5} onClick={comingSoon}/>
-                
-
-
-              </div>
-
-              <h1 id="games">Hot Games: Play & Earn</h1>
-
-
-              <div className="allGames">
-
-                <img id="second_game" src={four} onClick={comingSoon}/>
-                <img id="first_game" src={secondgame} onClick={comingSoon}/>
-                <img id="second_game" src={a3} onClick={comingSoon}/>
-                <img id="first_game" src={a6} onClick={comingSoon}/>
-                <img id="second_game" src={third} onClick={comingSoon}/>
-                <img id="first_game" src={a8} onClick={comingSoon}/>
+                <img id="second_game" src={game} onClick={() => { nav('/Bet') }} />
+                <img id="second_game" src={a4} onClick={comingSoon} />
+                <img id="first_game" src={a7} onClick={comingSoon} />
+                <img id="second_game" src={a1} onClick={comingSoon} />
+                <img id="first_game" src={a2} onClick={comingSoon} />
+                <img id="second_game" src={a5} onClick={comingSoon} />
 
 
 
+            </div>
+
+            <h1 id="games">Hot Games: Play & Earn</h1>
+
+
+            <div className="allGames">
+
+                <img id="second_game" src={four} onClick={comingSoon} />
+                <img id="first_game" src={secondgame} onClick={comingSoon} />
+                <img id="second_game" src={a3} onClick={comingSoon} />
+                <img id="first_game" src={a6} onClick={comingSoon} />
+                <img id="second_game" src={third} onClick={comingSoon} />
+                <img id="first_game" src={a8} onClick={comingSoon} />
 
 
 
-              </div>
+
+
+
+            </div>
 
 
 
