@@ -1,25 +1,22 @@
-import React, { useState, useEffect, useRef, useContext } from 'react'; // useContext add kiya
-import { useLocation, useNavigate } from 'react-router'; // Location aur Nav add kiya
-import { dataContext } from '../userContext.'; // Context import
-import { useDispatch, useSelector } from 'react-redux'; // Redux
-import { setUserData } from '../../../redux/userSlice'; // Redux action
+import React, { useState, useEffect, useRef, useContext } from 'react'; 
+import { useLocation, useNavigate } from 'react-router'; 
+import { dataContext } from '../userContext.'; 
+import { useDispatch, useSelector } from 'react-redux'; 
+import { setUserData } from '../../../redux/userSlice'; 
 import axios from 'axios';
 
 const AviatorGame = () => {
-  // --- Payment & Navigation Logic Start ---
   const location = useLocation();
   const nav = useNavigate();
   const dispatch = useDispatch();
   const { serverURL } = useContext(dataContext);
   const { userData } = useSelector(state => state.user);
   
-  // Jo amount Bet2.jsx se aaya hai, wahi use karein
   const initialBet = location.state?.amount || 0; 
-  // --- Payment & Navigation Logic End ---
 
   const [multiplier, setMultiplier] = useState(1.00);
   const [isFlying, setIsFlying] = useState(false);
-  const [bet, setBet] = useState(initialBet); // Default bet set from Bet2
+  const [bet, setBet] = useState(initialBet); 
   const [history, setHistory] = useState(['2.50', '1.10', '8.40', '1.05', '3.20']);
   
   const canvasRef = useRef(null);
@@ -73,16 +70,14 @@ const AviatorGame = () => {
     ctx.restore();
   };
 
-  const startFlight = async () => { // async banaya for API
+  const startFlight = async () => {
     if (isFlying) return;
     
-    // 1. Pehle Check karein balance hai ya nahi
     if (bet > 0 && userData?.walletBalance < bet) {
-      alert("Balance kam hai!");
+      alert("Bhai, balance kam hai! Pehle recharge karo.");
       return nav('/Bet2');
     }
 
-    // 2. Paisa kaatne ka API Call
     try {
         if (bet > 0) {
             const res = await axios.post(`${serverURL}/lose`, 
@@ -100,7 +95,8 @@ const AviatorGame = () => {
 
     setIsFlying(true);
     setMultiplier(1.00);
-    crashPoint.current = (Math.random() * 3.9 + 1.1).toFixed(2);
+    // Crash point ko 2 decimal tak limit kiya
+    crashPoint.current = parseFloat((Math.random() * 3.9 + 1.1).toFixed(2));
     
     const animate = () => {
       setMultiplier((prev) => {
@@ -119,21 +115,23 @@ const AviatorGame = () => {
     requestRef.current = requestAnimationFrame(animate);
   };
 
-  const cashOut = async () => { // async banaya for API
+  const cashOut = async () => { 
     if (!isFlying) return;
     cancelAnimationFrame(requestRef.current);
     setIsFlying(false);
 
-    // 3. Jeetne par Wallet Update API Call
     try {
-        const winAmount = bet * multiplier;
+        // 🎯 DECIMAL FIX: Amount ko clean 2-digit number banaya
+        const winAmount = Number((bet * multiplier).toFixed(2)); 
+        
         const res = await axios.post(`${serverURL}/win`, 
             { amount: winAmount }, 
             { withCredentials: true }
         );
+        
         if (res.data.success) {
             dispatch(setUserData(res.data.userData));
-            alert(`Jackpot! Aapne ₹${winAmount.toFixed(2)} Cash out kiye! 143!`);
+            alert(`Jackpot! Aapne ₹${winAmount} Cash out kiye! 143!`);
         }
     } catch (err) {
         console.error("Winning update failed", err);
@@ -143,120 +141,33 @@ const AviatorGame = () => {
   return (
     <>
       <style>{`
-        .aviator-body {
-          background-color: #0b0e11;
-          height: 100vh;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          color: white;
-          padding: 10px;
-          font-family: sans-serif;
-          box-sizing: border-box;
-          overflow: hidden;
-        }
-        .header-title {
-          color: #ffeb3b; 
-          margin: 5px 0; 
-          font-size: 1.2rem;
-          text-align: center;
-        }
-        .history-row {
-          display: flex;
-          gap: 6px;
-          margin-bottom: 10px;
-          overflow-x: auto;
-          width: 100%;
-          max-width: 600px;
-          padding-bottom: 5px;
-          scrollbar-width: none;
-        }
+        .aviator-body { background-color: #0b0e11; height: 100vh; display: flex; flex-direction: column; align-items: center; color: white; padding: 10px; font-family: sans-serif; box-sizing: border-box; overflow: hidden; position: relative; }
+        .header-title { color: #ffeb3b; margin: 5px 0; font-size: 1.2rem; text-align: center; }
+        .history-row { display: flex; gap: 6px; margin-bottom: 10px; overflow-x: auto; width: 100%; max-width: 600px; padding-bottom: 5px; scrollbar-width: none; }
         .history-row::-webkit-scrollbar { display: none; }
-        .history-tag {
-          padding: 4px 10px;
-          border-radius: 15px;
-          font-size: 11px;
-          background: #1c1f24;
-          border: 1px solid rgba(255,255,255,0.1);
-          white-space: nowrap;
-        }
+        .history-tag { padding: 4px 10px; border-radius: 15px; font-size: 11px; background: #1c1f24; border: 1px solid rgba(255,255,255,0.1); white-space: nowrap; }
         .high { color: #bb86fc; border-color: #bb86fc; }
         .low { color: #03dac6; border-color: #03dac6; }
-
-        .game-area {
-          position: relative;
-          width: 100%;
-          max-width: 600px;
-          height: 35vh;
-          background: #141518;
-          border-radius: 15px;
-          border: 1px solid #2b2d31;
-          overflow: hidden;
-          flex-shrink: 0;
-        }
-        .multiplier-val {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          font-size: clamp(35px, 12vw, 65px);
-          font-weight: 900;
-          z-index: 10;
-          pointer-events: none;
-        }
+        .game-area { position: relative; width: 100%; max-width: 600px; height: 35vh; background: #141518; border-radius: 15px; border: 1px solid #2b2d31; overflow: hidden; flex-shrink: 0; }
+        .multiplier-val { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: clamp(35px, 12vw, 65px); font-weight: 900; z-index: 10; pointer-events: none; }
         .scaling { color: white; animation: pulse 0.1s infinite alternate; }
         .crashed-val { color: #ff1f44; text-align: center; }
-        @keyframes pulse { 
-          from { transform: translate(-50%, -50%) scale(1); } 
-          to { transform: translate(-50%, -50%) scale(1.05); } 
-        }
-
-        .bet-box {
-          margin-top: 15px;
-          width: 100%;
-          max-width: 400px;
-          background: #1b1d21;
-          padding: 15px;
-          border-radius: 20px;
-          box-sizing: border-box;
-          flex-shrink: 0;
-        }
-        .input-row {
-          display: flex;
-          background: #000;
-          border-radius: 50px;
-          padding: 5px;
-          margin-bottom: 12px;
-          align-items: center;
-        }
-        .input-row button {
-          background: none; border: none; color: white;
-          font-size: 20px; width: 45px; cursor: pointer;
-        }
-        .input-row input {
-          background: none; border: none; color: white;
-          text-align: center; font-size: 18px; font-weight: bold; width: 100%;
-          outline: none;
-        }
-        .action-btn {
-          width: 100%; border: none; border-radius: 15px; padding: 12px;
-          font-size: 18px; font-weight: 900; cursor: pointer;
-          transition: 0.3s;
-        }
+        @keyframes pulse { from { transform: translate(-50%, -50%) scale(1); } to { transform: translate(-50%, -50%) scale(1.05); } }
+        .bet-box { margin-top: 15px; width: 100%; max-width: 400px; background: #1b1d21; padding: 15px; border-radius: 20px; box-sizing: border-box; flex-shrink: 0; }
+        .input-row { display: flex; background: #000; border-radius: 50px; padding: 5px; margin-bottom: 12px; align-items: center; }
+        .input-row button { background: none; border: none; color: white; font-size: 20px; width: 45px; cursor: pointer; }
+        .input-row input { background: none; border: none; color: white; text-align: center; font-size: 18px; font-weight: bold; width: 100%; outline: none; }
+        .action-btn { width: 100%; border: none; border-radius: 15px; padding: 12px; font-size: 18px; font-weight: 900; cursor: pointer; transition: 0.3s; }
         .btn-bet { background: #28a745; color: white; }
         .btn-cash { background: #ffc107; color: black; }
         .cash-val { font-size: 12px; display: block; margin-top: 2px; }
-
-        @media (min-width: 600px) {
-          .game-area { height: 50vh; }
-          .header-title { font-size: 1.5rem; }
-        }
+        @media (min-width: 600px) { .game-area { height: 50vh; } .header-title { font-size: 1.5rem; } }
       `}</style>
 
       <div className="aviator-body">
-        {/* Wallet Balance Display */}
-        <div style={{position: 'absolute', top: '10px', right: '10px', background: '#28a745', padding: '5px 15px', borderRadius: '20px', fontWeight: 'bold'}}>
-             ₹ {userData?.walletBalance || 0}
+        {/* Wallet Display */}
+        <div style={{position: 'absolute', top: '10px', right: '10px', background: '#28a745', padding: '5px 15px', borderRadius: '20px', fontWeight: 'bold', zIndex: 100}}>
+             ₹ {Number(userData?.walletBalance || 0).toFixed(2)}
         </div>
 
         <h3 className="header-title">AVIATOR HOLI SPECIAL ✈️</h3>
