@@ -74,9 +74,9 @@ function Home() {
             <div className="allGames">
 
                 <img id="second_game" src={game} onClick={() => { nav('/Bet') }} />
-                <img id="second_game" src={a4} onClick={comingSoon} />
-                <img id="first_game" src={a7} onClick={comingSoon} />
-                <img id="second_game" src={a1} onClick={comingSoon} />
+                <img id="second_game" src={secondgame} onClick={() => { nav('/bet2') }} />
+                <img id="first_game" src={a1} onClick={() => { nav('/Bet3') }}/>
+                <img id="second_game" src={a7} onClick={comingSoon} />
                 <img id="first_game" src={a2} onClick={comingSoon} />
                 <img id="second_game" src={a5} onClick={comingSoon} />
 
@@ -90,7 +90,7 @@ function Home() {
             <div className="allGames">
 
                 <img id="second_game" src={four} onClick={comingSoon} />
-                <img id="first_game" src={secondgame}  onClick={() => { nav('/bet2') }} />
+                <img id="first_game" src={a4}   onClick={comingSoon} />
                 <img id="second_game" src={a3} onClick={comingSoon} />
                 <img id="first_game" src={a6} onClick={comingSoon} />
                 <img id="second_game" src={third} onClick={comingSoon} />
