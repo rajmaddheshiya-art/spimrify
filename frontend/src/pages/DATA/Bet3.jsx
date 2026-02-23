@@ -19,7 +19,7 @@ function Bet3() {
         }
 
         // 🎯 Change: Ab ye /big-small route par bhejega
-        nav("/big-small", { state: { amount: bet } });
+        nav("/big", { state: { amount: bet } });
     };
 
     return (
