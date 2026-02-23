@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import sf from "../../assets/sf.jpeg"
-import bs_logo from "../../assets/game.png" // 👈 Big/Small ka logo yahan use karein
+import big from "../../assets/big.png" // 👈 Big/Small ka logo yahan use karein
 
 function Bet3() {
     let nav = useNavigate()
@@ -39,7 +39,7 @@ function Bet3() {
 
             <div className="divLogoBet">
                 {/* 🎯 Big/Small related image */}
-                <img src={bs_logo} className="logoBet" alt="big-small-game" />
+                <img src={big} className="logoBet" alt="big-small-game" />
             </div>
 
             <div className="bet" >

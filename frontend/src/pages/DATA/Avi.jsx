@@ -131,7 +131,7 @@ const AviatorGame = () => {
         
         if (res.data.success) {
             dispatch(setUserData(res.data.userData));
-            alert(`Jackpot! Aapne ₹${winAmount} Cash out kiye! 143!`);
+            alert(`Jackpot! Aapne ₹${winAmount} Cash out kiye!`);
         }
     } catch (err) {
         console.error("Winning update failed", err);

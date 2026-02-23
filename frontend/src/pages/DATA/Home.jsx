@@ -18,7 +18,7 @@ import a6 from "../../assets/a6.png"
 import a7 from "../../assets/a7.png"
 import a8 from "../../assets/a8.png"
 import holi from "../../assets/holi.png"
-
+import big from "../../assets/big.png"
 
 function Home() {
     useGetCurrentUserData()
@@ -75,7 +75,7 @@ function Home() {
 
                 <img id="second_game" src={game} onClick={() => { nav('/Bet') }} />
                 <img id="second_game" src={secondgame} onClick={() => { nav('/bet2') }} />
-                <img id="first_game" src={a1} onClick={() => { nav('/Bet3') }}/>
+                <img id="first_game" src={big} onClick={() => { nav('/Bet3') }}/>
                 <img id="second_game" src={a7} onClick={comingSoon} />
                 <img id="first_game" src={a2} onClick={comingSoon} />
                 <img id="second_game" src={a5} onClick={comingSoon} />
