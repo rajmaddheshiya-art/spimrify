@@ -90,7 +90,7 @@ function Home() {
             <div className="allGames">
 
                 <img id="second_game" src={four} onClick={comingSoon} />
-                <img id="first_game" src={secondgame}  onClick={() => { nav('/aviator') }} />
+                <img id="first_game" src={secondgame}  onClick={() => { nav('/bet2') }} />
                 <img id="second_game" src={a3} onClick={comingSoon} />
                 <img id="first_game" src={a6} onClick={comingSoon} />
                 <img id="second_game" src={third} onClick={comingSoon} />

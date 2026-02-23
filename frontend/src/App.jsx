@@ -15,6 +15,7 @@ import Wallet from "./pages/DATA/wallet";
 import Bet from "./pages/DATA/Bet";
 import Withdrawal from "./pages/DATA/Withdra";
 import AviatorGame from "./pages/DATA/Avi";
+import Bet2 from "./pages/DATA/Bet2";
 
 function App() {
     const { userData, loading: reduxLoading } = useSelector(state => state.user);
@@ -66,6 +67,7 @@ function App() {
             <Route path="/game" element={isLoggedIn ? (isVerified ? <NumberGame /> : <Navigate to="/otp" />) : <Navigate to="/login" />} />
             <Route path="/aviator" element={isLoggedIn ? (isVerified ? <AviatorGame /> : <Navigate to="/otp" />) : <Navigate to="/login" />} />
             <Route path="/Bet" element={isLoggedIn ? (isVerified ? <Bet /> : <Navigate to="/otp" />) : <Navigate to="/login" />} />
+            <Route path="/Bet2" element={isLoggedIn ? (isVerified ? <Bet2 /> : <Navigate to="/otp" />) : <Navigate to="/login" />} />
             <Route path="/withdra" element={isLoggedIn ? (isVerified ? <Withdrawal /> : <Navigate to="/otp" />) : <Navigate to="/login" />} />
 
             <Route path="*" element={<Navigate to="/" />} />
