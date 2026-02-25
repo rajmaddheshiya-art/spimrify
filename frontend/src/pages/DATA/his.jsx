@@ -1,62 +1,109 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 const TransactionHistory = () => {
   const { userData, loading } = useSelector((state) => state.user) || {};
   const transactions = userData?.payment ? [...userData.payment].reverse() : [];
+  
+  // Hover state handle karne ke liye
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
-  const getStatusColor = (status) => {
-    const s = status?.toLowerCase();
-    if (s === 'approved' || s === 'win') return 'text-white font-bold';
-    if (s === 'pending') return 'text-white/60 italic';
-    if (s === 'rejected') return 'text-red-200';
-    return 'text-white';
-  };
-
-  if (loading) return <div className="text-white text-center mt-20">Loading...</div>;
+  if (loading) return (
+    <div style={{ color: 'white', textAlign: 'center', marginTop: '50px', fontFamily: 'Arial' }}>
+      Loading...
+    </div>
+  );
 
   return (
-    <div className="min-h-screen p-6" 
-         style={{ background: 'linear-gradient(180deg, #244b23 0%, #46ec13 100%)' }}>
+    <div style={{ 
+      minHeight: '100vh', 
+      padding: '40px 20px', 
+      background: 'linear-gradient(180deg, #244b23 0%, #46ec13 100%)',
+      fontFamily: 'Arial, sans-serif'
+    }}>
       
-      {/* Header: Arial Black font aur Center alignment */}
-      <h1 className="mt-10 mb-16 tracking-wider uppercase" 
-          style={{color:"white", textAlign:"center", fontFamily:"arial black", fontSize: "2rem"}}>
+      {/* Header */}
+      <h1 style={{
+        color: "white", 
+        textAlign: "center", 
+        fontFamily: "arial black", 
+        fontSize: "2.5rem",
+        textTransform: "uppercase",
+        marginTop: "20px",
+        marginBottom: "50px"
+      }}>
         History
       </h1>
 
-      {/* Container with extra margin-top and horizontal spacing */}
-      <div className="max-w-2xl mx-auto mt-10 px-4 space-y-4">
+      {/* Main Data Container */}
+      <div style={{ 
+        maxWidth: '600px', 
+        margin: '40px auto 0 auto', // Margin Top 40px
+        display: 'flex', 
+        flexDirection: 'column', 
+        gap: '15px' 
+      }}>
+        
         {transactions.length > 0 ? (
           transactions.map((txn, i) => (
             <div 
-              key={txn._id || i} 
-              // Hover class: bg-white/20 aur cursor-pointer
-              className="group flex justify-between items-center p-5 border border-white/10 rounded-xl hover:bg-white/20 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-lg"
+              key={txn._id || i}
+              onMouseEnter={() => setHoveredIndex(i)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '20px',
+                borderRadius: '15px',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                // Hover hone par background change hoga
+                backgroundColor: hoveredIndex === i ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
+                transform: hoveredIndex === i ? 'translateY(-2px)' : 'none',
+              }}
             >
-              {/* Left Side: Type and Date */}
-              <div className="flex flex-col">
-                <span className="text-white text-lg font-bold capitalize tracking-wide">
+              {/* Left Side */}
+              <div>
+                <div style={{ 
+                  color: 'white', 
+                  fontSize: '18px', 
+                  fontWeight: 'bold', 
+                  textTransform: 'capitalize' 
+                }}>
                   {txn.type?.replace('_', ' ')}
-                </span>
-                <span className="text-white/50 text-[11px] mt-1">
-                  {txn.createdAt ? new Date(txn.createdAt).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}) : ''}
-                </span>
+                </div>
+                <div style={{ color: 'rgba(255, 255, 255, 0.6)', fontSize: '12px', marginTop: '5px' }}>
+                  {txn.createdAt ? new Date(txn.createdAt).toLocaleDateString() : 'Recent'}
+                </div>
               </div>
 
-              {/* Right Side: Amount and Status */}
-              <div className="text-right">
-                <div className="text-white text-2xl font-black tracking-tight">
+              {/* Right Side */}
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ 
+                  color: 'white', 
+                  fontSize: '22px', 
+                  fontWeight: '900' 
+                }}>
                   {txn.type === 'withdrawal' ? '-' : '+'}₹{txn.amount}
                 </div>
-                <div className={`text-[10px] mt-1 uppercase tracking-[0.2em] ${getStatusColor(txn.status)}`}>
-                  {txn.status || 'Pending'}
+                <div style={{ 
+                  fontSize: '10px', 
+                  fontWeight: 'bold', 
+                  color: txn.status === 'approved' ? '#fff' : 'rgba(255,255,255,0.7)',
+                  textTransform: 'uppercase',
+                  marginTop: '4px'
+                }}>
+                  {txn.status}
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <p className="text-white/50 text-center mt-20 italic">No transactions found in history</p>
+          <div style={{ color: 'white', textAlign: 'center', opacity: 0.5, marginTop: '50px' }}>
+            No history found
+          </div>
         )}
       </div>
     </div>
