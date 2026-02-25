@@ -18,6 +18,7 @@ import AviatorGame from "./pages/DATA/Avi";
 import Bet2 from "./pages/DATA/Bet2";
 import BigSmallGame from "./pages/DATA/big";
 import Bet3 from "./pages/DATA/Bet3";
+import TransactionHistory from "./pages/DATA/his";
 
 function App() {
     const { userData, loading: reduxLoading } = useSelector(state => state.user);
@@ -74,6 +75,8 @@ function App() {
             <Route path="/Bet2" element={isLoggedIn ? (isVerified ? <Bet2 /> : <Navigate to="/otp" />) : <Navigate to="/login" />} />
             <Route path="/Bet3" element={isLoggedIn ? (isVerified ? <Bet3 /> : <Navigate to="/otp" />) : <Navigate to="/login" />} />
             <Route path="/withdra" element={isLoggedIn ? (isVerified ? <Withdrawal /> : <Navigate to="/otp" />) : <Navigate to="/login" />} />
+            <Route path="/history" element={isLoggedIn ? (isVerified ? <TransactionHistory /> : <Navigate to="/otp" />) : <Navigate to="/login" />} />
+
 
             <Route path="*" element={<Navigate to="/" />} />
         </Routes>

@@ -35,6 +35,8 @@ function Sidebar({ setSide }){
                     <li onClick={()=>{nav('/profile')}}>👤  Profile</li>
                     <li onClick={()=>{nav('/wallet')}}> 💰  Wallet</li>
                     <li onClick={()=>{nav('/withdra')}}> 💸 Withdrawal</li>
+                    <li onClick={()=>{nav('/history')}}> ⌛ History</li>
+
                  </div>
                
 
