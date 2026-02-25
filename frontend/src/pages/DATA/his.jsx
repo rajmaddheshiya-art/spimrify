@@ -19,34 +19,37 @@ const TransactionHistory = () => {
     <div className="min-h-screen p-6" 
          style={{ background: 'linear-gradient(180deg, #244b23 0%, #46ec13 100%)' }}>
       
-      {/* Header: Center mein History */}
-      <h1 className="text-white text-3xl font-bold text-center mb-10 tracking-wider uppercase">
+      {/* Header: Arial Black font aur Center alignment */}
+      <h1 className="mt-10 mb-16 tracking-wider uppercase" 
+          style={{color:"white", textAlign:"center", fontFamily:"arial black", fontSize: "2rem"}}>
         History
       </h1>
 
-      <div className="max-w-2xl mx-auto space-y-2">
+      {/* Container with extra margin-top and horizontal spacing */}
+      <div className="max-w-2xl mx-auto mt-10 px-4 space-y-4">
         {transactions.length > 0 ? (
           transactions.map((txn, i) => (
             <div 
               key={txn._id || i} 
-              className="group flex justify-between items-center p-4 border-b border-white/10 hover:bg-white/10 transition-all duration-300 cursor-pointer"
+              // Hover class: bg-white/20 aur cursor-pointer
+              className="group flex justify-between items-center p-5 border border-white/10 rounded-xl hover:bg-white/20 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-lg"
             >
               {/* Left Side: Type and Date */}
               <div className="flex flex-col">
-                <span className="text-white text-lg font-medium capitalize tracking-wide group-hover:translate-x-1 transition-transform">
+                <span className="text-white text-lg font-bold capitalize tracking-wide">
                   {txn.type?.replace('_', ' ')}
                 </span>
-                <span className="text-white/50 text-xs">
-                  {txn.createdAt ? new Date(txn.createdAt).toLocaleDateString('en-IN') : ''}
+                <span className="text-white/50 text-[11px] mt-1">
+                  {txn.createdAt ? new Date(txn.createdAt).toLocaleDateString('en-IN', {day:'2-digit', month:'short', year:'numeric'}) : ''}
                 </span>
               </div>
 
               {/* Right Side: Amount and Status */}
               <div className="text-right">
-                <div className="text-white text-xl font-bold tracking-tight">
+                <div className="text-white text-2xl font-black tracking-tight">
                   {txn.type === 'withdrawal' ? '-' : '+'}₹{txn.amount}
                 </div>
-                <div className={`text-[10px] uppercase tracking-[0.1em] ${getStatusColor(txn.status)}`}>
+                <div className={`text-[10px] mt-1 uppercase tracking-[0.2em] ${getStatusColor(txn.status)}`}>
                   {txn.status || 'Pending'}
                 </div>
               </div>
